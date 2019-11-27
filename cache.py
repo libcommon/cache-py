@@ -40,10 +40,10 @@ def gen_python_hash(obj: Any) -> int:
     """
     if hasattr(obj, "__hash__") and callable(obj.__hash__):
         return hash(obj)
-    if isinstance(obj, list):
-        return hash(tuple(obj))
+    if isinstance(obj, (list, tuple)):
+        return hash(tuple(gen_python_hash(item) for item in obj))
     if isinstance(obj, dict):
-        return hash(tuple(obj.items()))
+        return hash(tuple((gen_python_hash(key), gen_python_hash(value)) for key, value in obj.items()))
     raise TypeError("cannot generate hash for type {}".format(type(obj).__name__))
 
 
@@ -190,6 +190,33 @@ class SizedLRUCache(SizedHashmapCache):
 
 if os.environ.get("ENVIRONMENT") == "TEST":
     import unittest
+
+
+    class TestUtilityMethods(unittest.TestCase):
+        """Tests for utility methods."""
+
+        def test_gen_python_hash(self):
+            tests = [
+                ("Natively hashable object (str)", str(), hash(str())),
+                ("List of hashable objects", [1, 2, 3, 4, 5], hash(tuple(hash(item) for item in [1, 2, 3, 4, 5]))),
+                ("List of non-hashable objects",
+                 [[1], [2], [3], [4]],
+                 hash(tuple(hash(tuple(hash(sub_item) for sub_item in item)) for item in [[1], [2], [3], [4]]))),
+                ("Tuple of hashable objects", (1, 2, 3, 4, 5), hash(tuple(hash(item) for item in (1, 2, 3, 4, 5)))),
+                ("Dict of hashable objects",
+                 dict(a=1, b=2, c=3, d=4, e=5),
+                 hash((
+                    (hash("a"), hash(1)),
+                    (hash("b"), hash(2)),
+                    (hash("c"), hash(3)),
+                    (hash("d"), hash(4)),
+                    (hash("e"), hash(5))
+                 )))
+            ]
+
+            for test_name, input_object, expected_value in tests:
+                with self.subTest(test_name=test_name):
+                    self.assertEqual(expected_value, gen_python_hash(input_object))
 
 
     class TestHashsetCache(unittest.TestCase):
