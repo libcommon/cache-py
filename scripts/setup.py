@@ -1,5 +1,4 @@
-## -*- coding: UTF-8 -*-
-## init.py
+## setup.py
 ##
 ## Copyright (c) 2019 libcommon
 ##
@@ -22,14 +21,31 @@
 ## SOFTWARE.
 
 
-from .cache import (
-    Cache,
-    gen_python_hash,
-    HashsetCache,
-    HashmapCache,
-    SizedHashmapCache,
-    SizedLRUCache
+import os
+import setuptools
+
+if os.path.isfile("README.md"):
+    with open("README.md", "r") as readme:
+        long_description = readme.read()
+else:
+    long_description = ""
+
+
+setuptools.setup(
+    name="PACKAGE_NAME",
+    version="PACKAGE_VERSION",
+    author="libcommon",
+    author_email="libcommon@protonmail.com",
+    description="PACKAGE_SHORT_DESCRIPTION",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="PACKAGE_CODE_URL",
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    python_requires='>=PACKAGE_MIN_PYTHON_VERSION',
 )
-
-
-__author__ = "libcommon"
