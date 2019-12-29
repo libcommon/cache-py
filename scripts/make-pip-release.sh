@@ -36,10 +36,10 @@ fi
 
 PACKAGE_VERSION="${1}"
 shift 1
-PACKAGE_NAME="<INSERT PACKAGE NAME>"
-PACKAGE_DESCRIPTION="<INSERT PACKAGE DESCRIPTION>"
-PACKAGE_CODE_URL="<INSERT PACKAGE CODE URL>"
-PACKAGE_MIN_PYTHON_VERSION="<INSERT MIN PYTHON VERSION>"
+PACKAGE_NAME="lc_cache"
+PACKAGE_DESCRIPTION="Python library containing simple implementations of caches."
+PACKAGE_CODE_URL="https:\/\/github.com\/libcommon\/cache-py"
+PACKAGE_MIN_PYTHON_VERSION="3.6"
 
 # Ensure package directory exists
 if ! [ -d "${PACKAGE_NAME}" ]
