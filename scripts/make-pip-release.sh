@@ -37,7 +37,7 @@ fi
 PACKAGE_VERSION="${1}"
 shift 1
 PACKAGE_NAME="lc_cache"
-PACKAGE_DESCRIPTION="Python library containing simple interface for and implementations of caches."
+PACKAGE_DESCRIPTION="Python library containing a simple interface and implementations of caches."
 PACKAGE_CODE_URL="https:\/\/github.com\/libcommon\/cache-py"
 PACKAGE_MIN_PYTHON_VERSION="3.6"
 
@@ -50,13 +50,6 @@ fi
 
 # Remove tests from source file(s)
 ./scripts/remove-tests.sh "${PACKAGE_NAME}"
-
-# Copy LICENSE file to package directory if exists
-if [ -f 'LICENSE' ]
-then
-    echo "::: INFO: Copying LICENSE file to package directory"
-    cp 'LICENSE' "${PACKAGE_NAME}"
-fi
 
 echo "::: INFO: Generating Setuptools setup.py file"
 cat ./scripts/setup.py | \
