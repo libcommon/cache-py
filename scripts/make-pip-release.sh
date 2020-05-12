@@ -41,6 +41,9 @@ PACKAGE_DESCRIPTION="Python library containing a simple interface and implementa
 PACKAGE_CODE_URL="https:\/\/github.com\/libcommon\/cache-py"
 PACKAGE_MIN_PYTHON_VERSION="3.6"
 
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+TAG_NAME="v${PACKAGE_VERSION}"
+
 # Ensure package directory exists
 if ! [ -d "${PACKAGE_NAME}" ]
 then
@@ -69,3 +72,20 @@ python3 setup.py bdist_wheel
 
 # Remove development files
 ./scripts/remove-dev-files.sh
+
+# Add the distribution files to source control
+echo "::: INFO: Adding distribution files to source control"
+git add setup.py dist/
+
+# Commit changes
+echo "::: INFO: Committing release"
+git commit -am "Made release ${PACKAGE_VERSION}"
+
+# Create local tag for release
+echo "::: INFO: Creating local tag for release (${TAG_NAME})"
+git tag -m "Release ${TAG_NAME}" -a "${TAG_NAME}"
+
+# Push commit and tag to remote
+echo "::: INFO: Pushing release to remote"
+git push origin "${BRANCH_NAME}"
+git push origin "${TAG_NAME}"
