@@ -32,4 +32,3 @@ from .cache import (
 )
 
 
-__author__ = "libcommon"
